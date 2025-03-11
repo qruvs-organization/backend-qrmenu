@@ -7,4 +7,4 @@ Define all the routes to handle each CRUD function.
 Open Postman.
 Test the REST CRUD API.
 
-https://itwork.mn(url:https://itwork.mn)
+https://itwork.mn
