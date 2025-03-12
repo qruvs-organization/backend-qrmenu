@@ -33,9 +33,6 @@ module.exports = function (sequelize, DataTypes) {
       logo: {
         type: DataTypes.STRING(100)
       },
-      logo: {
-        type: DataTypes.STRING(256)
-      },
       background: {
         type: DataTypes.STRING(256)
       },

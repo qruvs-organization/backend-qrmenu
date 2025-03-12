@@ -13,7 +13,7 @@ const {
   changePassword,
 } = require("../controller/users");
 
-router.route("/").get(protect, authorize("admin","merchant"),getUsers);
+router.route("/").get(protect, authorize("admin"),getUsers);
 router.route("/signup").post(signUp);
 router.route("/signin").post(signIn);
 router.route("/update").put(protect, updateUserInfo);
@@ -28,5 +28,5 @@ router
   .put(protect,changePassword);
 router
   .route("/:id")
-  .delete(protect, authorize("admin", "merchant"), removeUser);
+  .delete(protect, authorize("admin"), removeUser);
 module.exports = router;

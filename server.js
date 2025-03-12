@@ -39,21 +39,30 @@ app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/upload", uploadRoutes);
 app.use("/api/v1", successRoutes);
 app.use(errorHandler);
-// relationships and hasOne,hasMany, belongsToMany, belongs
+// user to departments - one to many
+db.users.hasMany(db.department, { foreignkey: "user_id" });
+db.department.belongsTo(db.users);
 
-// // user to product - one to many
-// db.users.hasMany(db.product, { foreignkey: "userId" });
-// db.product.belongsTo(db.users);
+// departments to menu - one to many
+db.department.hasMany(db.menu, { foreignkey: "department_id" });
+db.menu.belongsTo(db.department);
 
-// // order in order_items - one to many
-// db.order.hasMany(db.order_item, { foreignkey: "orderId", onDelete: "CASCADE",
-//   onUpdate: "CASCADE", });
-// db.order_item.belongsTo(db.order);
-// // order in order_items - one to many
-// db.order.hasMany(db.invoice, {
-//   foreignkey: "orderId", onDelete: "CASCADE",  // Ensures invoices are deleted when order is deleted
-//   onUpdate: "CASCADE",
-// });
+// menu to category - one to many
+db.menu.hasMany(db.category, { foreignkey: "menu_id" });
+db.category.belongsTo(db.menu);
+
+// category to menu_item - one to many
+db.category.hasMany(db.menu_item, { foreignkey: "category_id" });
+db.menu_item.belongsTo(db.category);
+
+// menu_item to add_ons - one to many
+db.menu_item.hasMany(db.add_ons, { foreignkey: "menu_item_id" });
+db.add_ons.belongsTo(db.menu_item);
+
+// menu_item to item_variant - one to many
+db.menu_item.hasMany(db.item_variant, { foreignkey: "menu_item_id" });
+db.item_variant.belongsTo(db.menu_item);
+
 db.sequelize
   .sync()
   .then((result) => {

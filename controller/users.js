@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const paginate = require("../utils/paginate-sequelize");
 const MyError = require("../utils/myError");
 const bcrypt = require("bcrypt");
+const sendEmail = require("../utils/email");
 exports.getUsers = asyncHandler(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 1000;
@@ -48,7 +49,85 @@ exports.signUp = asyncHandler(async (req, res, next) => {
   if (!user) {
     throw new MyError("Бүртгэж чадсангүй");
   }
-
+  const message = `<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цахим Меню Бүртгэл</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9fafb;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #28a745;
+        }
+        .header h1 {
+            color: #28a745;
+        }
+        .content {
+            padding: 20px 0;
+        }
+        .content p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #fff;
+            background-color: #28a745;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Сайн байна уу?</h1>
+        </div>
+        <div class="content">
+            <p>Та <strong>"Цахим меню захиалга систем"</strong>-д амжилттай бүртгүүллээ. 🎉</p>
+            <p><strong>Холбоос:</strong> <a href="https://qr-menu.itwork.mn" class="btn">qr-menu.itwork.mn</a></p>
+            <p><strong>Нэвтрэх нэр:</strong> ${req.body.email}</p>
+            <p><strong>Нууц үг:</strong> ${req.body.password}</p>
+            <p>Өдрийг сайхан өнгөрүүлээрэй! ☀️</p>
+        </div>
+        <div class="footer">
+            <p><a href="https://qr-menu.itwork.mn">qr-menu.itwork.mn</a> &copy; ${new Date().getFullYear()} БҮХ ЭРХ ХУУЛИАР ХАМГААЛАГДСАН.</p>
+        </div>
+    </div>
+</body>
+</html>
+`;
+  await sendEmail({
+    subject: "Шинэ бүртгэл үүслээ",
+    email: req.body.email,
+    message,
+  });
   res.status(200).json({
     message: "",
     body: { token: user.getJsonWebToken(), user: user },
