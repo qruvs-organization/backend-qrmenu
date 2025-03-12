@@ -111,9 +111,7 @@ exports.signUp = asyncHandler(async (req, res, next) => {
         </div>
         <div class="content">
             <p>Та <strong>"Цахим меню захиалга систем"</strong>-д амжилттай бүртгүүллээ. 🎉</p>
-            <p><strong>Холбоос:</strong> <a href="https://qr-menu.itwork.mn" class="btn">qr-menu.itwork.mn</a></p>
-            <p><strong>Нэвтрэх нэр:</strong> ${req.body.email}</p>
-            <p><strong>Нууц үг:</strong> ${req.body.password}</p>
+            <p><strong>Холбоос:</strong> <a href="https://qr-menu.itwork.mn">qr-menu.itwork.mn</a></p>
             <p>Өдрийг сайхан өнгөрүүлээрэй! ☀️</p>
         </div>
         <div class="footer">
@@ -152,34 +150,34 @@ exports.signIn = asyncHandler(async (req, res, next) => {
   }
   res.status(200).json({
     message: "",
-    body: { token: user.getJsonWebToken(), user: user},
+    body: { token: user.getJsonWebToken(), user: user },
   });
 });
 
 exports.userInfo = asyncHandler(async (req, res, next) => {
-  const { userId} = req;
-  
-  const user= await req.db.users.findOne({
-    where:{
-      id:userId
+  const { userId } = req;
+
+  const user = await req.db.users.findOne({
+    where: {
+      id: userId
     }
   })
-  if(!user){
-    throw new MyError("Та бүртгэлтэй эсэхээ шалгана уу",401)
+  if (!user) {
+    throw new MyError("Та бүртгэлтэй эсэхээ шалгана уу", 401)
   }
   res.status(200).json({
     message: "Success (:",
-      body: user,
+    body: user,
   });
 });
-exports.updateUserInfo = asyncHandler(async(req,res,next)=>{
-  const {userId} = req;
+exports.updateUserInfo = asyncHandler(async (req, res, next) => {
+  const { userId } = req;
   if (req.body.password) {
     delete req.body.password;
   }
   await req.db.users.update(
     req.body,
-    { where: { id:userId }, fields: { exclude: ['password'] } } 
+    { where: { id: userId }, fields: { exclude: ['password'] } }
   );
   res.status(200).json({
     message: "User updated.",
@@ -189,8 +187,8 @@ exports.updateUserInfo = asyncHandler(async(req,res,next)=>{
 exports.removeUser = asyncHandler(async (req, res, next) => {
   const userId = req.params.id;
   const user = await req.db.users.findByPk(userId);
-  if(!user){
-    throw new MyError(`Таны устгах гэсэн ${userId} дугаартай хэрэглэгчийн мэдээлэл олдсонгүй`,404)
+  if (!user) {
+    throw new MyError(`Таны устгах гэсэн ${userId} дугаартай хэрэглэгчийн мэдээлэл олдсонгүй`, 404)
   }
   await user.destroy();
 
@@ -201,7 +199,7 @@ exports.removeUser = asyncHandler(async (req, res, next) => {
 });
 
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
-  const {email, password} = req.body;
+  const { email, password } = req.body;
   if (!email) {
     throw new MyError("Хэрэглэгч олдсонгүй!", 400);
   }
@@ -216,7 +214,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const salt = await bcrypt.genSalt(10);
   const new_password = await bcrypt.hash(password, salt);
   await req.db.users.update(
-    { password:new_password },
+    { password: new_password },
     {
       where: {
         email,
