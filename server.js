@@ -10,6 +10,7 @@ const logger = require("./middleware/logger");
 const fileupload = require("express-fileupload");
 // Router оруулж ирэх
 const userRoutes = require("./routes/users");
+const departmentRoutes = require("./routes/department");
 const uploadRoutes = require("./routes/upload")
 const successRoutes = require("./routes/success");
 const injectDb = require("./middleware/injectDb");
@@ -37,30 +38,31 @@ app.use(express.static("public"));
 app.use(morgan("combined", { stream: accessLogStream }));
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/upload", uploadRoutes);
+app.use("/api/v1/department", departmentRoutes);
 app.use("/api/v1", successRoutes);
 app.use(errorHandler);
 // user to departments - one to many
-db.users.hasMany(db.department, { foreignkey: "user_id" });
+db.users.hasMany(db.department, { foreignkey: "user_id", onDelete: "CASCADE" });
 db.department.belongsTo(db.users);
 
 // departments to menu - one to many
-db.department.hasMany(db.menu, { foreignkey: "department_id" });
+db.department.hasMany(db.menu, { foreignkey: "department_id", onDelete: "CASCADE" });
 db.menu.belongsTo(db.department);
 
 // menu to category - one to many
-db.menu.hasMany(db.category, { foreignkey: "menu_id" });
+db.menu.hasMany(db.category, { foreignkey: "menu_id", onDelete: "CASCADE" });
 db.category.belongsTo(db.menu);
 
 // category to menu_item - one to many
-db.category.hasMany(db.menu_item, { foreignkey: "category_id" });
+db.category.hasMany(db.menu_item, { foreignkey: "category_id", onDelete: "CASCADE" });
 db.menu_item.belongsTo(db.category);
 
 // menu_item to add_ons - one to many
-db.menu_item.hasMany(db.add_ons, { foreignkey: "menu_item_id" });
+db.menu_item.hasMany(db.add_ons, { foreignkey: "menu_item_id", onDelete: "CASCADE" });
 db.add_ons.belongsTo(db.menu_item);
 
 // menu_item to item_variant - one to many
-db.menu_item.hasMany(db.item_variant, { foreignkey: "menu_item_id" });
+db.menu_item.hasMany(db.item_variant, { foreignkey: "menu_item_id", onDelete: "CASCADE" });
 db.item_variant.belongsTo(db.menu_item);
 
 db.sequelize
