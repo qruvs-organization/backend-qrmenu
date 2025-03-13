@@ -21,6 +21,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
   req.userId = tokenObj.id;
   req.userRole = tokenObj.role;
+  req.email = tokenObj.email;
 
   next();
 });

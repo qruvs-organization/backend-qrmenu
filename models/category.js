@@ -27,7 +27,7 @@ module.exports = function (sequelize, DataTypes) {
       photo: {
         type: DataTypes.STRING(100)
       },
-      menu_id: {
+      menuId: {
         type: DataTypes.INTEGER(10).UNSIGNED,
         allowNull: false,
         references: {

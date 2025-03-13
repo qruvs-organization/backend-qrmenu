@@ -28,7 +28,6 @@ module.exports = function (sequelize, DataTypes) {
       },
       symbol: {
         type: DataTypes.STRING(10),
-        defaultValue: "₮",
       },
       logo: {
         type: DataTypes.STRING(100)
@@ -63,7 +62,7 @@ module.exports = function (sequelize, DataTypes) {
       twiter: {
         type: DataTypes.STRING(100)
       },
-      user_id: {
+      userId: {
         type: DataTypes.INTEGER(10).UNSIGNED,
         allowNull: false,
         references: {

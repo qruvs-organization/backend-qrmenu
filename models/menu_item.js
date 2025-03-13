@@ -34,7 +34,7 @@ module.exports = function (sequelize, DataTypes) {
       image: {
         type: DataTypes.STRING(100)
       },
-      category_id: {
+      categoryId: {
         type: DataTypes.INTEGER(10).UNSIGNED,
         allowNull: false,
         references: {

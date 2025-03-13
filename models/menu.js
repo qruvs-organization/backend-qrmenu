@@ -21,7 +21,7 @@ module.exports = function (sequelize, DataTypes) {
         type:DataTypes.BOOLEAN,
         defaultValue:true
       },
-      department_id: {
+      departmentId: {
         type: DataTypes.INTEGER(10).UNSIGNED,
         allowNull: false,
         references: {
