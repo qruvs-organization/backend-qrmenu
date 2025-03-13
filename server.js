@@ -11,6 +11,11 @@ const fileupload = require("express-fileupload");
 // Router оруулж ирэх
 const userRoutes = require("./routes/users");
 const departmentRoutes = require("./routes/department");
+const menuRoutes = require("./routes/menu")
+const categoryRoutes = require("./routes/category")
+const menuItemRoutes = require("./routes/menu_item")
+const addOnsRoutes = require("./routes/add_ons")
+const ItemVariantRoutes = require("./routes/item_variant")
 const uploadRoutes = require("./routes/upload")
 const successRoutes = require("./routes/success");
 const injectDb = require("./middleware/injectDb");
@@ -39,6 +44,11 @@ app.use(morgan("combined", { stream: accessLogStream }));
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/upload", uploadRoutes);
 app.use("/api/v1/department", departmentRoutes);
+app.use("/api/v1/menu", menuRoutes);
+app.use("/api/v1/category", categoryRoutes);
+app.use("/api/v1/item", menuItemRoutes);
+app.use("/api/v1/add-ons", addOnsRoutes);
+app.use("/api/v1/variant", ItemVariantRoutes);
 app.use("/api/v1", successRoutes);
 app.use(errorHandler);
 // user to departments - one to many

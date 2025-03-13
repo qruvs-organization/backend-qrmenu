@@ -79,8 +79,7 @@ exports.getDepartments=asyncHandler(async(req,res,next)=>{
 exports.updateDepartment = asyncHandler(async (req, res, next) => {
   const {id}=req.params
   const {userId}=req
-  console.log(id)
-  const department = await req.db.department.findOne({
+  const department = await req.db.department.update({...req.body}, {
     where: {
       id, userId
     }
@@ -90,7 +89,7 @@ exports.updateDepartment = asyncHandler(async (req, res, next) => {
   }
   res.status(200).json({
     message: "Success",
-    body: department,
+    body: { success: true },
   });
 });
 
@@ -101,7 +100,7 @@ exports.deleteDepartment = asyncHandler(async (req, res, next) => {
     id, userId
   }});
   if (!department) {
-    throw new MyError(`Таны устгах гэсэн ${userId} дугаартай мэдээлэл олдсонгүй`, 404)
+    throw new MyError(`Таны устгах гэсэн ${id} дугаартай мэдээлэл олдсонгүй`, 404)
   }
   await department.destroy();
 
