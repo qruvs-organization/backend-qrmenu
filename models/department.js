@@ -28,7 +28,6 @@ module.exports = function (sequelize, DataTypes) {
       },
       symbol: {
         type: DataTypes.STRING(10),
-        defaultValue: "₮",
       },
       logo: {
         type: DataTypes.STRING(100)
