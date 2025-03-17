@@ -142,12 +142,12 @@ exports.signIn = asyncHandler(async (req, res, next) => {
     where: { email },
   });
   if (!user) {
-    throw new MyError("Мэдээлэл буруу байна", 400);
+    throw new MyError("Таны нэвтрэх нэр эсхүл нууц үг буруу байна", 400);
   }
 
   const ok = await user.CheckPass(password);
   if (!ok) {
-    throw new MyError("Мэдээлэл буруу байна", 400);
+    throw new MyError("Таны нэвтрэх нэр эсхүл нууц үг буруу байна", 400);
   }
   res.status(200).json({
     message: "",
@@ -201,9 +201,9 @@ exports.removeUser = asyncHandler(async (req, res, next) => {
 
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const { email } = req.body;
-  const password = generateLengthPass(6)
+  const password = generateLengthPass(8)
   if (!email) {
-    throw new MyError("Хэрэглэгч олдсонгүй!", 400);
+    throw new MyError(`Бүртгэлгүй байна!`, 400);
   }
   const users = await req.db.users.findOne({
     where: {
@@ -211,7 +211,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     },
   });
   if (!users) {
-    throw new MyError("хэрэглэгч олдсонгүй!", 400);
+    throw new MyError( `${email} хэрэглэгч олдсонгүй!`, 400);
   }
   const salt = await bcrypt.genSalt(10);
   const new_password = await bcrypt.hash(password, salt);
