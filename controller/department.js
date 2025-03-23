@@ -71,8 +71,8 @@ exports.getDepartments=asyncHandler(async(req,res,next)=>{
     const departments = await req.db.department.findAll(query);
     res.status(200).json({
       success: true,
-      items: departments,
-      pagination,
+      body:{items: departments,total:departments.length,
+      pagination},
     });
 })
 

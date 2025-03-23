@@ -62,6 +62,10 @@ module.exports = function (sequelize, DataTypes) {
       twiter: {
         type: DataTypes.STRING(100)
       },
+      ispaid: {
+        type: DataTypes.BOOLEAN,
+        defaultValue:false
+      },
       userId: {
         type: DataTypes.INTEGER(10).UNSIGNED,
         allowNull: false,
