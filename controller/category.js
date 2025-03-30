@@ -67,10 +67,13 @@ exports.getCategories=asyncHandler(async(req,res,next)=>{
  
    const category = await req.db.category.findAll(query);
    res.status(200).json({
-     success: true,
-     items: category,
-     pagination,
-   });
+    success: true,
+    body: {
+      items: category, total: category.length,
+      pagination
+    }
+  }
+  );
 })
 
 
