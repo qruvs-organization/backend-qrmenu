@@ -15,6 +15,7 @@ exports.createCategory = asyncHandler(async (req, res, next) => {
       body: { success: true },
     });
 })
+
 exports.getCategory=asyncHandler(async(req,res,next)=>{
     const {id}=req.params
     if(!id){
@@ -32,6 +33,7 @@ exports.getCategory=asyncHandler(async(req,res,next)=>{
       body: category,
     });
 })
+
 exports.getCategories=asyncHandler(async(req,res,next)=>{
   const page = parseInt(req.query.page) || 1;
    const limit = parseInt(req.query.limit) || 1000;
@@ -76,7 +78,6 @@ exports.getCategories=asyncHandler(async(req,res,next)=>{
   );
 })
 
-
 exports.deleteCategory = asyncHandler(async (req, res, next) => {
   const {id} = req.params;
   const category = await req.db.category.findByPk(id);
@@ -90,6 +91,7 @@ exports.deleteCategory = asyncHandler(async (req, res, next) => {
     body: { success: true }
   });
 });
+
 exports.updateCategory = asyncHandler(async (req, res, next) => {
   const {id}=req.params
   const category = await req.db.category.update({...req.body}, {
