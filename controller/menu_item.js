@@ -12,7 +12,7 @@ exports.createMenuItem = asyncHandler(async (req, res, next) => {
   
     res.status(200).json({
       message: "",
-      body: { success: true },
+      body: menu_item,
     });
 })
 exports.getMenuItem=asyncHandler(async(req,res,next)=>{
@@ -67,11 +67,15 @@ exports.getMenuItems=asyncHandler(async(req,res,next)=>{
        ]);
    }
  
-   const menu_item = await req.db.menu_item.findAll(query);
+   const menu_item = await req.db.menu_item.findAll({...query, include:{
+    model:req.db.item_variant
+  }});
    res.status(200).json({
      success: true,
-     items: menu_item,
-     pagination,
+     body: {
+       items: menu_item, total: menu_item.length,
+       pagination
+     },
    });
 })
 

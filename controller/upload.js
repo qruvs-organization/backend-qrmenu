@@ -12,6 +12,7 @@ exports.uploadImage = asyncHandler(async (req, res, next) => {
   if (file.size > process.env.MAX_UPLOAD_FILE_SIZE) {
     throw new MyError(`Таны зурагны хэмжээ ${process.env.MAX_UPLOAD_FILE_SIZE}mb хэтэрч болохгүй ..`, 400);
   }
+
   file.name = `photo_${req.params.id}${cuid()}` + path.parse(file.name).ext;
   file.mv(`${process.env.PHOTO_FOLDER_PATH}/${file.name}`, (err) => {
     if (err) {

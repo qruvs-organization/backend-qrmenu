@@ -66,6 +66,9 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.BOOLEAN,
         defaultValue:false
       },
+      expired_date:{
+        type:DataTypes.DATE
+      },
       description: {
         type: DataTypes.TEXT,
         defaultValue:false

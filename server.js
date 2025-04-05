@@ -24,6 +24,7 @@ const cors = require("cors");
 dotenv.config({ path: "./config/config.env" });
 
 const db = require("./config/db-mysql");
+const { expiredCheckDepartments } = require("./services/cronJobs");
 
 const app = express();
 
@@ -81,6 +82,12 @@ db.sequelize
     console.log("sync hiigdlee...");
   })
   .catch((err) => console.log(err));
+
+
+// Cron Jobs
+setInterval(async () => {
+  await expiredCheckDepartments({ db }, {}, () => {});
+}, 60000); // 60 секунд тутамд ажиллана
 
 const server = app.listen(
   process.env.PORT,

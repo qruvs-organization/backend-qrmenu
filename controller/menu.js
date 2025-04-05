@@ -49,6 +49,9 @@ exports.getMenus = asyncHandler(async (req, res, next) => {
   let query = { offset: pagination.start - 1, limit };
 
   if (req.query) {
+    if (!req.userId) {
+      req.query = { ...req.query, is_visible: true }
+    }
     query.where = req.query;
   }
 

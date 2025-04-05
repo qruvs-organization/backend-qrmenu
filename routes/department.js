@@ -10,6 +10,7 @@ const {
 } = require("../controller/department");
 
 router.route("/").post(protect, createDepartment).get(getDepartments);
+router.route("/auth").get(protect,getDepartments);
 router
   .route("/:id")
   .get(getDepartment)
