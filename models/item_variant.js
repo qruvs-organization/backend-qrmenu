@@ -17,6 +17,9 @@ module.exports = function (sequelize, DataTypes) {
           },
         },
       },
+      due_variant:{
+        type:DataTypes.DATE
+      },
       price: {
         type: DataTypes.INTEGER
       },

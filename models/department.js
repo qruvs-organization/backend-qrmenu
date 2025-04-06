@@ -73,6 +73,9 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.TEXT,
         defaultValue:false
       },
+      type: {
+        type: DataTypes.STRING(45)
+      },
       userId: {
         type: DataTypes.INTEGER(10).UNSIGNED,
         allowNull: false,
