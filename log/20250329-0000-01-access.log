@@ -1,4 +1,0 @@
-::1 - - [27/Mar/2025:17:10:24 +0000] "GET /api/v1/user/info HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
-::1 - - [27/Mar/2025:17:10:24 +0000] "GET /api/v1/user/info HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
-::1 - - [27/Mar/2025:17:10:24 +0000] "GET /api/v1/department HTTP/1.1" 200 3057 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
-::1 - - [27/Mar/2025:17:10:24 +0000] "GET /api/v1/department HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"

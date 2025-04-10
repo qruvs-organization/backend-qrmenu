@@ -7,8 +7,9 @@ const {
   getDepartments,
   updateDepartment,
   deleteDepartment,
+  ExpiredTimeQpayCallback,
 } = require("../controller/department");
-
+router.route("/qpay").get(ExpiredTimeQpayCallback)
 router.route("/").post(protect, createDepartment).get(getDepartments);
 router.route("/auth").get(protect,getDepartments);
 router
