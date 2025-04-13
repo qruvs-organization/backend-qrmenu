@@ -33,7 +33,8 @@ const getToken = async () => {
 // new invoice
 exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
   const token = await getToken();
-  const { departmentId, exp_day, userId, amount } = req.body;
+  const { departmentId, exp_day, amount } = req.body;
+  const userId = req.userId;
   if (!departmentId || !exp_day || !userId || !amount) {
     throw new MyError("Мэдээлэлээ бүрэн дамжуулна уу", 400);
   }
@@ -61,16 +62,21 @@ exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
       },
     }
   );
+  if (!new_invoice) {
+    throw new MyError(`invoice үүссэнгүй байна ..`, 400);
+  }
   const { qr_text, invoice_id } = new_invoice.data;
 
-  await req.db.invoice.create({
+ const invoice_res =  await req.db.invoice.create({
     bank_qr_code: qr_text,
     amount,
     invoice_id,
     callback_url,
     payment_type: "QPAY",
-    orderId: order_id,
   });
+  if(!invoice_res){
+    throw new MyError(`invoice үүссэнгүй байна ..`, 400);
+  }
   res.status(200).json({
     message: "QPAY.",
     body: new_invoice.data,

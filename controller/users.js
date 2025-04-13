@@ -171,6 +171,7 @@ exports.userInfo = asyncHandler(async (req, res, next) => {
     body: user,
   });
 });
+
 exports.updateUserInfo = asyncHandler(async (req, res, next) => {
   const { userId } = req;
   if (req.body.password) {
@@ -185,6 +186,7 @@ exports.updateUserInfo = asyncHandler(async (req, res, next) => {
     body: { success: true },
   });
 })
+
 exports.removeUser = asyncHandler(async (req, res, next) => {
   const userId = req.params.id;
   const user = await req.db.users.findByPk(userId);

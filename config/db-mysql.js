@@ -31,7 +31,8 @@ const models = [
   require("../models/category"),
   require("../models/menu_item"),
   require("../models/item_variant"),
-  require("../models/add_ons")
+  require("../models/add_ons"),
+  require("../models/invoice")
 ];
 
 models.forEach((model) => {
