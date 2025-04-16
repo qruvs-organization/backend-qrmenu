@@ -4,6 +4,7 @@ const MyError = require("../utils/myError");
 const base64 = require("buffer").Buffer;
 const dotenv = require("dotenv");
 const exp = require("constants");
+const cuid = require("cuid");
 dotenv.config({ path: "./config/config.env" });
 const username = process.env.QPAY_USERNAME;
 const password = process.env.QPAY_PASSWORD;
@@ -41,9 +42,10 @@ exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
   if (!token) {
     throw new MyError(`Токен байхгүй байна ..`, 400);
   }
+  const uniq_generate_id="department_"+departmentId+"_"+cuid()
   const callback_url =
     QPAY_CALL_BACK_URL +
-    `?departmentId=${departmentId}&exp_day=${exp_day}&userId=${userId}`;
+    `?departmentId=${departmentId}&exp_day=${exp_day}&userId=${userId}&uniq_generate_id=${uniq_generate_id}`;
   const new_invoice = await axios.post(
     (process.env.QPAY_BASEURL || "https://merchant.qpay.mn") + "/invoice",
     {
@@ -73,6 +75,7 @@ exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
     invoice_id,
     callback_url,
     payment_type: "QPAY",
+    uniq_generate_id
   });
   if(!invoice_res){
     throw new MyError(`invoice үүссэнгүй байна ..`, 400);

@@ -147,8 +147,8 @@ exports.expiredCheckDepartments = asyncHandler(async (req, res, next) => {
 });
 // departmentId and expire day : http://localhost:8001/api/v1/department/qpay?departmentId=1&exp_day=2&order_number=3
 exports.ExpiredTimeQpayCallback = asyncHandler(async (req, res, next) => {
-  const { departmentId, exp_day, userId } = req.query;
-  if (!departmentId || !exp_day || !userId) {
+  const { departmentId, exp_day, userId,uniq_generate_id } = req.query;
+  if (!departmentId || !exp_day || !userId || !uniq_generate_id) {
     throw new MyError("Мэдээлэлээ бүрэн дамжуулна уу", 400);
   }
  await req.db.department.update(
@@ -157,6 +157,14 @@ exports.ExpiredTimeQpayCallback = asyncHandler(async (req, res, next) => {
       where: {
         id: departmentId,
         userId,
+      },
+    }
+  );
+  await req.db.invoice.update(
+    {status:"paid" },
+    {
+      where: {
+        uniq_generate_id,
       },
     }
   );

@@ -1,1 +1,0 @@
-// paid and expired license function bichih
