@@ -212,6 +212,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
       email,
     },
   });
+  console.log(password)
   if (!users) {
     throw new MyError( `${email} хэрэглэгч олдсонгүй!`, 400);
   }
