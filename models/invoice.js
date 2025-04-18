@@ -34,7 +34,7 @@ module.exports = function (sequelize, DataTypes) {
         },
       },
       bank_qr_code: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: false,
         validate: {
           notEmpty: {
