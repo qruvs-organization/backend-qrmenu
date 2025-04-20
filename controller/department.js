@@ -3,6 +3,7 @@ const asyncHandler = require("../middleware/asyncHandle");
 const MyError = require("../utils/myError");
 const paginate = require("../utils/paginate-sequelize");
 const { generateLengthDate } = require("../utils/common");
+const _ = require("lodash");
 const now = new Date();
 exports.createDepartment = asyncHandler(async (req, res, next) => {
   const { body, userId } = req;
@@ -80,10 +81,11 @@ exports.getDepartments = asyncHandler(async (req, res, next) => {
   }
 
   const departments = await req.db.department.findAll(query);
+  const shuffledDepartments = _.shuffle(departments);
   res.status(200).json({
     success: true,
     body: {
-      items: departments,
+      items: shuffledDepartments,
       total: departments.length,
       pagination,
     },
