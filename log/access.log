@@ -1,5 +1,0 @@
-::1 - - [20/Apr/2025:15:44:42 +0000] "GET /api/v1/department HTTP/1.1" 200 3738 "-" "PostmanRuntime/7.43.3"
-::1 - - [20/Apr/2025:15:49:41 +0000] "GET /api/v1/department HTTP/1.1" 200 3738 "-" "PostmanRuntime/7.43.3"
-::1 - - [20/Apr/2025:15:49:43 +0000] "GET /api/v1/department HTTP/1.1" 200 3738 "-" "PostmanRuntime/7.43.3"
-::1 - - [20/Apr/2025:15:49:44 +0000] "GET /api/v1/department HTTP/1.1" 200 3738 "-" "PostmanRuntime/7.43.3"
-::1 - - [20/Apr/2025:15:49:45 +0000] "GET /api/v1/department HTTP/1.1" 200 3738 "-" "PostmanRuntime/7.43.3"
