@@ -4,6 +4,7 @@ const MyError = require("../utils/myError");
 const paginate = require("../utils/paginate-sequelize");
 const { generateLengthDate } = require("../utils/common");
 const _ = require("lodash");
+const { DepartmentPayment } = require("../utils/constants");
 const now = new Date();
 exports.createDepartment = asyncHandler(async (req, res, next) => {
   const { body, userId } = req;
@@ -147,14 +148,14 @@ exports.expiredCheckDepartments = asyncHandler(async (req, res, next) => {
     }
   }
 });
-// departmentId and expire day : http://localhost:8001/api/v1/department/qpay?departmentId=1&exp_day=2&order_number=3
+// departmentId and expire day : http://localhost:8001/api/v1/department/qpay?departmentId=1&exp_day=30&order_number=123&type=standart
 exports.ExpiredTimeQpayCallback = asyncHandler(async (req, res, next) => {
-  const { departmentId, exp_day, userId,uniq_generate_id } = req.query;
-  if (!departmentId || !exp_day || !userId || !uniq_generate_id) {
+  const { departmentId, userId,uniq_generate_id,type,exp_day } = req.query;
+  if (!departmentId  || !userId || !exp_day || !uniq_generate_id||!type) {
     throw new MyError("Мэдээлэлээ бүрэн дамжуулна уу", 400);
   }
  await req.db.department.update(
-    { expired_date: generateLengthDate(parseInt(exp_day || 0)), ispaid:true },
+    { expired_date: generateLengthDate(parseInt(exp_day || 0)), ispaid:true,type },
     {
       where: {
         id: departmentId,

@@ -12,17 +12,22 @@ module.exports = function (sequelize, DataTypes) {
       invoice_id: {
         type: DataTypes.STRING,
       },
-      uniq_generate_id:{
-        type: DataTypes.STRING
+      uniq_generate_id: {
+        type: DataTypes.STRING,
       },
-      callback_url:{
-        type: DataTypes.STRING,},
+      callback_url: {
+        type: DataTypes.STRING,
+      },
       payment_type: {
         type: DataTypes.STRING,
       },
       status: {
         type: DataTypes.STRING,
-        defaultValue:"pending"
+        defaultValue: "pending",
+      },
+      sell: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
       amount: {
         type: DataTypes.INTEGER,

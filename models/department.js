@@ -74,7 +74,7 @@ module.exports = function (sequelize, DataTypes) {
         defaultValue:false
       },
       type: {
-        type: DataTypes.STRING(45)
+        type: DataTypes.STRING(45)//mini, standart, premium 
       },
       userId: {
         type: DataTypes.INTEGER(10).UNSIGNED,
