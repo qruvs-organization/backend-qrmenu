@@ -16,6 +16,6 @@ export const PaymentSell = [{
     exp_day: 180
 },
 {
-    typprocesse: 10,
+    process: 10,
     exp_day: 365
 }]
