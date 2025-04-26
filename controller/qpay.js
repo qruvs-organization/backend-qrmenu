@@ -35,7 +35,7 @@ const getToken = async () => {
 // new invoice
 exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
   const token = await getToken();
-  const { departmentId, exp_day, amount, type='standart' } = req.body;
+  const { departmentId, exp_day, amount, pay_type='standart' } = req.body;
   const userId = req.userId;
   if (!departmentId || !exp_day || !userId || !amount) {
     throw new MyError("Мэдээлэлээ бүрэн дамжуулна уу", 400);
@@ -44,7 +44,7 @@ exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
     throw new MyError(`Токен байхгүй байна ..`, 400);
   }
   const uniq_generate_id="department_"+departmentId+"_"+cuid()
-  const callback_url = QPAY_CALL_BACK_URL +`?departmentId=${departmentId}&exp_day=${exp_day}&userId=${userId}&uniq_generate_id=${uniq_generate_id}&type=${type}`;
+  const callback_url = QPAY_CALL_BACK_URL +`?departmentId=${departmentId}&exp_day=${exp_day}&userId=${userId}&uniq_generate_id=${uniq_generate_id}&pay_type=${pay_type}`;
   // const callback_url = "https://webhook-test.com/f5ff1a6564fda51d6d89a88912c5c5f9"
   
   const calculateAmount = generatePayment(exp_day, amount)
@@ -54,7 +54,7 @@ exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
       invoice_code: INVOICE_CODE,
       sender_invoice_no: SENDER_INVOICE_NO,
       invoice_receiver_code: "terminal",
-      invoice_description: `Сунгалт: ${exp_day} өдөр, ${type} багц`,
+      invoice_description: `Сунгалт: ${exp_day} өдөр, ${pay_type} багц`,
       sender_branch_code: SENDER_BRANCH_CODE,
       amount: calculateAmount.amount,
       callback_url,

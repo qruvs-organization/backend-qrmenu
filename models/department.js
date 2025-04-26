@@ -74,6 +74,9 @@ module.exports = function (sequelize, DataTypes) {
         defaultValue:false
       },
       type: {
+        type: DataTypes.STRING(45)//hotel, food, etc 
+      },
+      pay_type: {
         type: DataTypes.STRING(45)//mini, standart, premium 
       },
       userId: {
