@@ -148,14 +148,14 @@ exports.expiredCheckDepartments = asyncHandler(async (req, res, next) => {
     }
   }
 });
-// departmentId and expire day : http://localhost:8001/api/v1/department/qpay?departmentId=1&exp_day=30&order_number=123&type=standart
+// departmentId and expire day : http://localhost:8001/api/v1/department/qpay?departmentId=1&exp_day=30&order_number=123&pay_type=standart
 exports.ExpiredTimeQpayCallback = asyncHandler(async (req, res, next) => {
-  const { departmentId, userId,uniq_generate_id,type,exp_day } = req.query;
-  if (!departmentId  || !userId || !exp_day || !uniq_generate_id||!type) {
+  const { departmentId, userId,uniq_generate_id,pay_type,exp_day } = req.query;
+  if (!departmentId  || !userId || !exp_day || !uniq_generate_id||!pay_type) {
     throw new MyError("Мэдээлэлээ бүрэн дамжуулна уу", 400);
   }
  await req.db.department.update(
-    { expired_date: generateLengthDate(parseInt(exp_day || 0)), ispaid:true,type },
+    { expired_date: generateLengthDate(parseInt(exp_day || 0)), ispaid:true,pay_type },
     {
       where: {
         id: departmentId,
