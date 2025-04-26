@@ -12,6 +12,9 @@ export const DepartmentPayment = [{
 }]
 
 export const PaymentSell = [{
+    process: 0,
+    exp_day: 30
+},{
     process: 5,
     exp_day: 180
 },
