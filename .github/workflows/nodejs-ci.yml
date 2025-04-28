@@ -1,35 +1,39 @@
-name: Deploy backend-qrmenu
+name: Deploy to Server
 
 on:
   push:
     branches:
-      - master
+      - master  # `master` салбарт өөрчлөлт орсон тохиолдолд энэ процесс ажиллана.
 
 jobs:
   deploy:
-    runs-on: self-hosted   # Self-hosted runner ашиглана
-    name: Build & Restart via PM2
-
+    runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # 1. Кодыг татаж авах
+      - name: Checkout code
+        uses: actions/checkout@v3
 
+      # 2. SSH түлхүүрийг ашиглах
       - name: Add SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY  }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
+      # 3. SSH холболт хийх
+      - name: Deploy to server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+            # Сервер дээрх проектын хавтас руу орно.
+            cd /path/to/your/project
 
-      - name: Install dependencies
-        run: npm ci
+            # GitHub-аас хамгийн сүүлийн код татах
+            git pull origin master
 
-      - name: Restart backend with PM2
-        run: pm2 restart backend-qrmenu
+            # Хамаарлуудыг дахин суулгах
+            npm ci
 
-      - name: PM2 status
-        run: pm2 status
+            # PM2 процессийг дахин эхлүүлэх
+            pm2 restart backend-qrmenu
+          EOF
