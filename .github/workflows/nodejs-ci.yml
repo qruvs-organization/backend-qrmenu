@@ -24,7 +24,7 @@ jobs:
 
       # 3. Хамаарлыг цэвэрлэж суулгах
       - name: Install dependencies
-        run: npm ci   # Хамаарлыг lock файлын дагуу суулгана
+        run: npm install
 
       # 4. Проект бүтээх (хэрэв шаардлагатай бол)
       #- name: Build
