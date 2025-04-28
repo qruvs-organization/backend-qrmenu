@@ -4,7 +4,7 @@ router.route("/").get((req, res) => {
   res.status(200).json({
     message: {
       update_counter:"02",
-      message:"Success QR menu"
+      message:"Success QR menu + Runner"
     },
     success: true,
   });
