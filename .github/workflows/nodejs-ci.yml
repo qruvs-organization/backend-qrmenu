@@ -1,0 +1,39 @@
+name: Deploy backend-qrmenu
+
+# Триггер — master салбар руу өөрчлөлт орсон үед ажиллана
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: self-hosted   # Self-hosted runner ашиглана
+    name: Build & Restart via PM2
+
+    steps:
+      # 1. Кодыг татаж авах
+      - name: Checkout repository
+        uses: actions/checkout@v4   # Кодын өөрчлөлтийг татаж авах
+
+      # 2. Node.js-ийг суулгах (өөрийнх нь v22.14.0)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'   # Таны Node.js-ийн хувилбарыг тохируулна
+
+      # 3. Хамаарлыг цэвэрлэж суулгах
+      - name: Install dependencies
+        run: npm ci   # Хамаарлыг lock файлын дагуу суулгана
+
+      # 4. Проект бүтээх (хэрэв шаардлагатай бол)
+      #- name: Build
+      #  run: npm run build  # Хэрвээ танай бекэндийг build хийх шаардлагатай бол энэ хэсгийг ашиглана
+
+      # 5. PM2-ээр серверийг дахин эхлүүлэх
+      - name: Restart backend with PM2
+        run: pm2 restart backend-qrmenu   # Таны PM2 процессийн нэртэй тохируулах
+
+      # 6. (опцион) PM2-ийн статусыг шалгах
+      - name: PM2 status
+        run: pm2 status   # PM2-ийн процессыг шалгах
