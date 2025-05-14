@@ -4,7 +4,6 @@ const MyError = require("../utils/myError");
 const paginate = require("../utils/paginate-sequelize");
 const { generateLengthDate } = require("../utils/common");
 const _ = require("lodash");
-const { DepartmentPayment } = require("../utils/constants");
 const now = new Date();
 exports.createDepartment = asyncHandler(async (req, res, next) => {
   const { body, userId } = req;

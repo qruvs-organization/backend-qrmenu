@@ -26,7 +26,12 @@ exports.getMenuItem=asyncHandler(async(req,res,next)=>{
       },{
         model:req.db.add_ons
       },{
-        model:req.db.item_variant
+        model:req.db.item_variant,
+        include: [
+        {
+          model: req.db.hotel_order_dates,
+        }
+      ]
       }]
     })
     res.status(200).json({

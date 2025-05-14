@@ -387,7 +387,7 @@ exports.changePassword = asyncHandler(async (req, res, next) => {
               <h1>Сайн байна уу?</h1>
           </div>
           <div class="content">
-              <p>Та <strong>"Таны нууц үгээ шинэчлэгдлээ. 🎉</p>
+              <p>Та <strong>Таны нууц үгээ шинэчлэгдлээ. 🎉</p>
               <p><strong>Холбоос:</strong> <a href="https://qr-menu.itwork.mn">qr-menu.itwork.mn</a></p>
               <p>Өдрийг сайхан өнгөрүүлээрэй! ☀️</p>
           </div>

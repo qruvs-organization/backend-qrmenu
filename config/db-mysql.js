@@ -30,6 +30,7 @@ const models = [
   require("../models/menu"),
   require("../models/category"),
   require("../models/menu_item"),
+  require("../models/hotel_dates"),
   require("../models/item_variant"),
   require("../models/add_ons"),
   require("../models/invoice")

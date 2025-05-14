@@ -7,10 +7,10 @@ const colors = require("colors");
 const errorHandler = require("./middleware/error");
 var morgan = require("morgan");
 const logger = require("./middleware/logger");
-const fileupload = require("express-fileupload");
 // Router оруулж ирэх
 const userRoutes = require("./routes/users");
 const departmentRoutes = require("./routes/department");
+const hotelRoutes = require("./routes/hotelRoutes");
 const menuRoutes = require("./routes/menu")
 const categoryRoutes = require("./routes/category")
 const menuItemRoutes = require("./routes/menu_item")
@@ -46,6 +46,7 @@ app.use(morgan("combined", { stream: accessLogStream }));
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/upload", uploadRoutes);
 app.use("/api/v1/department", departmentRoutes);
+app.use("/api/v1/hotel", hotelRoutes);
 app.use("/api/v1/menu", menuRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/item", menuItemRoutes);
@@ -77,6 +78,10 @@ db.add_ons.belongsTo(db.menu_item);
 // menu_item to item_variant - one to many
 db.menu_item.hasMany(db.item_variant, { foreignkey: "menu_item_id", onDelete: "CASCADE" });
 db.item_variant.belongsTo(db.menu_item);
+
+// menu_item to hotel_order_dates - one to many
+db.item_variant.hasMany(db.hotel_order_dates, { foreignkey: "item_variant_id", onDelete: "CASCADE" });
+db.hotel_order_dates.belongsTo(db.item_variant);
 
 db.sequelize
   .sync()

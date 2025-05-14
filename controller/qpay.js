@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const exp = require("constants");
 const cuid = require("cuid");
 const { generatePayment } = require("../utils/common");
+const paginate = require("../utils/paginate-sequelize");
 dotenv.config({ path: "./config/config.env" });
 const username = process.env.QPAY_USERNAME;
 const password = process.env.QPAY_PASSWORD;
@@ -88,3 +89,41 @@ exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
     body: new_invoice.data,
   });
 });
+
+exports.getInvoiceQpay = asyncHandler(async (req, res, next) => {
+  const page = parseInt(req.query.page) || 1;
+     const limit = parseInt(req.query.limit) || 1000;
+     const sort = req.query.sort;
+     let select = req.query.select;
+     if (select) {
+       select = select.split(" ");
+     }
+   
+     ["select", "sort", "page", "limit"].forEach((el) => delete req.query[el]);
+   
+     const pagination = await paginate(page, limit, req.db.invoice);
+   
+     let query = { offset: pagination.start - 1, limit };
+   
+     if (req.query) {
+       query.where = req.query;
+     }
+   
+     if (select) {
+       query.attributes = select;
+     }
+   
+     if (sort) {
+       query.order = sort
+         .split(" ")
+         .map((el) => [
+           el.charAt(0) === "-" ? el.substring(1) : el,
+           el.charAt(0) === "-" ? "DESC" : "ASC",
+         ]);
+     }
+const invoice = await req.db.invoice.findAll(query);
+   res.status(200).json({
+     success: true,
+     items: invoice,
+   });
+})

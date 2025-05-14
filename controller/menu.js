@@ -24,7 +24,7 @@ exports.getMenu = asyncHandler(async (req, res, next) => {
     include: [{
       model: req.db.department
     }, {
-      model: req.db.category
+      model: req.db.category,
     }]
   })
   res.status(200).json({
@@ -78,8 +78,6 @@ exports.getMenus = asyncHandler(async (req, res, next) => {
   }
   );
 })
-
-
 exports.deleteMenu = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const menu = await req.db.menu.findByPk(id);
