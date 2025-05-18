@@ -1,17 +1,17 @@
-// export const DepartmentPayment = [{
-//     type: "min",
-//     max_limit_photo: 30
-// },
-// {
-//     type: "standart",
-//     max_limit_photo: 50
-// },
-// {
-//     type: "premium",
-//     max_limit_photo: 50
-// }]
+const DepartmentPayment = [{
+    type: "min",
+    max_limit_photo: 30
+},
+{
+    type: "standart",
+    max_limit_photo: 50
+},
+{
+    type: "premium",
+    max_limit_photo: 50
+}]
 
-export const PaymentSell = [{
+const PaymentSell = [{
     process: 0,
     exp_day: 30
 },{
@@ -22,3 +22,7 @@ export const PaymentSell = [{
     process: 10,
     exp_day: 365
 }]
+
+module.exports = {
+  PaymentSell,DepartmentPayment
+};
