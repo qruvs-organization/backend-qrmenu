@@ -1,15 +1,15 @@
-export const DepartmentPayment = [{
-    type: "min",
-    max_limit_photo: 30
-},
-{
-    type: "standart",
-    max_limit_photo: 50
-},
-{
-    type: "premium",
-    max_limit_photo: 50
-}]
+// export const DepartmentPayment = [{
+//     type: "min",
+//     max_limit_photo: 30
+// },
+// {
+//     type: "standart",
+//     max_limit_photo: 50
+// },
+// {
+//     type: "premium",
+//     max_limit_photo: 50
+// }]
 
 export const PaymentSell = [{
     process: 0,
