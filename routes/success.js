@@ -3,7 +3,7 @@ const router = express.Router();
 router.route("/").get((req, res) => {
   res.status(200).json({
     message: {
-      update_counter:"02",
+      update_counter:"03",
       message:"Success QR menu + Runner1"
     },
     success: true,
