@@ -54,6 +54,7 @@ exports.signUp = asyncHandler(async (req, res, next) => {
     subject: "Шинэ бүртгэл үүслээ",
     email: req.body.email,
     message: emailTemplate({ title: "амжилттай бүртгүүллээ. 🎉" }),
+    isHtml:true
   });
   res.status(200).json({
     message: "",
@@ -152,6 +153,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     message: emailTemplate({
       title: "Таны нууц үгээ сэргээлээ. 🎉", label: ` <p><strong>Нууц үг:</strong> ${password}</p>
               <p>Өдрийг сайхан өнгөрүүлээрэй! ☀️</p>`}),
+    isHtml:true
   });
   await req.db.users.update(
     { password: new_password },
@@ -189,6 +191,7 @@ exports.changePassword = asyncHandler(async (req, res, next) => {
     message: emailTemplate({
       title: "Таны нууц үгээ шинэчлэгдлээ. 🎉"
     }),
+    isHtml:true
   });
   res.status(200).json({
     message: "Таны нууц үг амжилттай шинэчлэгдлээ",

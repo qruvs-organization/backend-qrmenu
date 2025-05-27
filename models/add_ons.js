@@ -18,7 +18,8 @@ module.exports = function (sequelize, DataTypes) {
         },
       },
       price: {
-        type: DataTypes.FLOAT
+        type: DataTypes.FLOAT,
+        defaultValue:0
       },
       item:{
           type: DataTypes.ENUM("single", "multiple"),

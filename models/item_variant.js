@@ -21,7 +21,8 @@ module.exports = function (sequelize, DataTypes) {
         type:DataTypes.DATE
       },
       price: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
+        defaultValue:0
       },
       menuItemId: {
         type: DataTypes.INTEGER(10).UNSIGNED,

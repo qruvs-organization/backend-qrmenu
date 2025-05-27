@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 
 const sendEmail = async (options) => {
+  const isHtml = options.isHtml ?? true;
   let transporter = nodemailer.createTransport({
     service:"gmail",
     auth: {
@@ -9,10 +10,12 @@ const sendEmail = async (options) => {
     },
   });
   var mailOptions = {
-    from: `Цахим меню систем <${process.env.SMTP_USERNAME}>`,
+    from: options.from?`${options.from} <${process.env.SMTP_USERNAME}>`: `Цахим меню систем <${process.env.SMTP_USERNAME}>`,
     to: options.email,
     subject: options.subject,
-    html: options.message,
+     ...(isHtml
+      ? { html: options.message }
+      : { text: options.message }),
   };
 
   const info = await transporter.sendMail(mailOptions, function (error, info) {
