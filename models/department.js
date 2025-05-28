@@ -66,6 +66,10 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.BOOLEAN,
         defaultValue:false
       },
+      is_price_visible:{
+        type: DataTypes.BOOLEAN,
+        defaultValue:true
+      },
       expired_date:{
         type:DataTypes.DATE
       },
