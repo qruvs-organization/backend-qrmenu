@@ -16,7 +16,7 @@ const PaymentSell = [{
     exp_day: 30
 },{
     process: 5,
-    exp_day: 180
+    exp_day: 180,
 },
 {
     process: 10,

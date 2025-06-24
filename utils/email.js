@@ -2,18 +2,23 @@ const nodemailer = require("nodemailer");
 
 const sendEmail = async (options) => {
   const isHtml = options.isHtml ?? true;
+  // Хүлээн авагчийн хаягийг шалгах
+  if (!options.email || !/^[\w.-]+@[\w.-]+\.\w+$/.test(options.email) ||
+    options.email.split("@")[0].length < 4) {
+    throw new Error("Зөв имэйл хаяг оруулна уу.");
+  }
   let transporter = nodemailer.createTransport({
-    service:"gmail",
+    service: "gmail",
     auth: {
       user: process.env.SMTP_USERNAME, // generated ethereal user
       pass: process.env.SMTP_PASSWORD, // generated ethereal password
     },
   });
   var mailOptions = {
-    from: options.from?`${options.from} <${process.env.SMTP_USERNAME}>`: `Цахим меню систем <${process.env.SMTP_USERNAME}>`,
+    from: options.from ? `${options.from} <${process.env.SMTP_USERNAME}>` : `Цахим меню систем <${process.env.SPONSOR_EMAIL}>`,
     to: options.email,
     subject: options.subject,
-     ...(isHtml
+    ...(isHtml
       ? { html: options.message }
       : { text: options.message }),
   };
@@ -25,7 +30,6 @@ const sendEmail = async (options) => {
       console.log("Email sent: " + info.response);
     }
   });
-
 
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 
