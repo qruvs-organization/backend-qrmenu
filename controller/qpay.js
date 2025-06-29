@@ -15,7 +15,7 @@ const SENDER_INVOICE_NO = "1234657";
 const SENDER_BRANCH_CODE = "SALBAR1";
 const QPAY_CALL_BACK_URL = process.env.QPAY_CALL_BACK_URL;
 
-const getToken = async () => {
+const getToken = async (merchant_username = username, merchantpassword = password) => {
   const response = await axios.post(
     (process.env.QPAY_BASEURL || "https://merchant.qpay.mn") + "/auth/token",
     {},
@@ -23,7 +23,7 @@ const getToken = async () => {
       headers: {
         "Content-Type": "application/json",
         Authorization:
-          "Basic " + base64.from(`${username}:${password}`).toString("base64"),
+          "Basic " + base64.from(`${merchant_username}:${merchantpassword}`).toString("base64"),
       },
     }
   );
@@ -35,8 +35,14 @@ const getToken = async () => {
 
 // new invoice
 exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
-  const token = await getToken();
-  const { departmentId, exp_day, amount, pay_type='standart' } = req.body;
+  const merchant = await req.db.merchant.findOne({
+    where: {
+      is_active: true
+    }
+  })
+  const token = await (merchant ? getToken(merchant.username, merchant.password) : getToken());
+
+  const { departmentId, exp_day, amount, pay_type = 'standart' } = req.body;
   const userId = req.userId;
   if (!departmentId || !exp_day || !userId || !amount) {
     throw new MyError("Мэдээлэлээ бүрэн дамжуулна уу", 400);
@@ -44,15 +50,15 @@ exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
   if (!token) {
     throw new MyError(`Токен байхгүй байна ..`, 400);
   }
-  const uniq_generate_id="department_"+departmentId+"_"+cuid()
-  const callback_url = QPAY_CALL_BACK_URL +`?departmentId=${departmentId}&exp_day=${exp_day}&userId=${userId}&uniq_generate_id=${uniq_generate_id}&pay_type=${pay_type}`;
+  const uniq_generate_id = "department_" + departmentId + "_" + cuid()
+  const callback_url = QPAY_CALL_BACK_URL + `?departmentId=${departmentId}&exp_day=${exp_day}&userId=${userId}&uniq_generate_id=${uniq_generate_id}&pay_type=${pay_type}`;
   // const callback_url = "https://webhook-test.com/f5ff1a6564fda51d6d89a88912c5c5f9"
-  
+
   const calculateAmount = generatePayment(exp_day, amount)
   const new_invoice = await axios.post(
     (process.env.QPAY_BASEURL || "https://merchant.qpay.mn") + "/invoice",
     {
-      invoice_code: INVOICE_CODE,
+      invoice_code: merchant.invoice_code || INVOICE_CODE,
       sender_invoice_no: SENDER_INVOICE_NO,
       invoice_receiver_code: "terminal",
       invoice_description: `Сунгалт: ${exp_day} өдөр, ${pay_type} багц`,
@@ -72,16 +78,16 @@ exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
   }
   const { qr_text, invoice_id } = new_invoice.data;
 
- const invoice_res =  await req.db.invoice.create({
+  const invoice_res = await req.db.invoice.create({
     bank_qr_code: qr_text,
     amount,
-    sell:calculateAmount.sell,
+    sell: calculateAmount.sell,
     invoice_id,
     callback_url,
     payment_type: "QPAY",
     uniq_generate_id
   });
-  if(!invoice_res){
+  if (!invoice_res) {
     throw new MyError(`invoice үүссэнгүй байна ..`, 400);
   }
   res.status(200).json({
@@ -92,38 +98,38 @@ exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
 
 exports.getInvoiceQpay = asyncHandler(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
-     const limit = parseInt(req.query.limit) || 1000;
-     const sort = req.query.sort;
-     let select = req.query.select;
-     if (select) {
-       select = select.split(" ");
-     }
-   
-     ["select", "sort", "page", "limit"].forEach((el) => delete req.query[el]);
-   
-     const pagination = await paginate(page, limit, req.db.invoice);
-   
-     let query = { offset: pagination.start - 1, limit };
-   
-     if (req.query) {
-       query.where = req.query;
-     }
-   
-     if (select) {
-       query.attributes = select;
-     }
-   
-     if (sort) {
-       query.order = sort
-         .split(" ")
-         .map((el) => [
-           el.charAt(0) === "-" ? el.substring(1) : el,
-           el.charAt(0) === "-" ? "DESC" : "ASC",
-         ]);
-     }
-const invoice = await req.db.invoice.findAll(query);
-   res.status(200).json({
-     success: true,
-     items: invoice,
-   });
+  const limit = parseInt(req.query.limit) || 1000;
+  const sort = req.query.sort;
+  let select = req.query.select;
+  if (select) {
+    select = select.split(" ");
+  }
+
+  ["select", "sort", "page", "limit"].forEach((el) => delete req.query[el]);
+
+  const pagination = await paginate(page, limit, req.db.invoice);
+
+  let query = { offset: pagination.start - 1, limit };
+
+  if (req.query) {
+    query.where = req.query;
+  }
+
+  if (select) {
+    query.attributes = select;
+  }
+
+  if (sort) {
+    query.order = sort
+      .split(" ")
+      .map((el) => [
+        el.charAt(0) === "-" ? el.substring(1) : el,
+        el.charAt(0) === "-" ? "DESC" : "ASC",
+      ]);
+  }
+  const invoice = await req.db.invoice.findAll(query);
+  res.status(200).json({
+    success: true,
+    items: invoice,
+  });
 })

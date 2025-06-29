@@ -50,11 +50,19 @@ exports.signUp = asyncHandler(async (req, res, next) => {
   if (!user) {
     throw new MyError("Бүртгэж чадсангүй");
   }
+  const smtp = await req.db.email.findOne({
+    where: {
+      is_active: true
+    }
+  })
   await sendEmail({
     subject: "Шинэ бүртгэл үүслээ",
     email: req.body.email,
     message: emailTemplate({ title: "амжилттай бүртгүүллээ. 🎉" }),
-    isHtml:true
+    isHtml: true,
+    smtp_username: smtp ? smtp.username : process.env.SMTP_USERNAME,
+    smtp_password: smtp ? smtp.password : process.env.SMTP_PASSWORD,
+
   });
   res.status(200).json({
     message: "",
@@ -141,19 +149,27 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
       email,
     },
   });
-  console.log(password)
   if (!users) {
     throw new MyError(`${email} хэрэглэгч олдсонгүй!`, 400);
   }
   const salt = await bcrypt.genSalt(10);
   const new_password = await bcrypt.hash(password, salt);
+
+  const smtp = await req.db.email.findOne({
+    where: {
+      is_active: true
+    }
+  })
   await sendEmail({
     subject: "Нууц үг солигдлоо үүслээ",
     email: req.body.email,
     message: emailTemplate({
       title: "Таны нууц үгээ сэргээлээ. 🎉", label: ` <p><strong>Нууц үг:</strong> ${password}</p>
               <p>Өдрийг сайхан өнгөрүүлээрэй! ☀️</p>`}),
-    isHtml:true
+    isHtml: true,
+    smtp_username: smtp ? smtp.username : process.env.SMTP_USERNAME,
+    smtp_password: smtp ? smtp.password : process.env.SMTP_PASSWORD,
+
   });
   await req.db.users.update(
     { password: new_password },
@@ -185,13 +201,23 @@ exports.changePassword = asyncHandler(async (req, res, next) => {
       },
     }
   );
+
+  const smtp = await req.db.email.findOne({
+    where: {
+      is_active: true
+    }
+  })
+
   await sendEmail({
     subject: "Таны нууц үг амжилттай шинэчлэгдлээ",
     email: req.email,
     message: emailTemplate({
       title: "Таны нууц үгээ шинэчлэгдлээ. 🎉"
     }),
-    isHtml:true
+    isHtml: true,
+    smtp_username: smtp ? smtp.username : process.env.SMTP_USERNAME,
+    smtp_password: smtp ? smtp.password : process.env.SMTP_PASSWORD,
+
   });
   res.status(200).json({
     message: "Таны нууц үг амжилттай шинэчлэгдлээ",

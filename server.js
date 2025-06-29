@@ -19,6 +19,7 @@ const ItemVariantRoutes = require("./routes/item_variant")
 const uploadRoutes = require("./routes/upload")
 const paymentRoutes = require("./routes/payment")
 const emailRoutes = require("./routes/email");
+const merchantRoutes = require("./routes/merchant");
 const successRoutes = require("./routes/success");
 const injectDb = require("./middleware/injectDb");
 const cors = require("cors");
@@ -55,6 +56,7 @@ app.use("/api/v1/add-ons", addOnsRoutes);
 app.use("/api/v1/payment",paymentRoutes );
 app.use("/api/v1/variant", ItemVariantRoutes);
 app.use("/api/v1/email", emailRoutes);
+app.use("/api/v1/merchant", merchantRoutes);
 app.use("/api/v1", successRoutes);
 app.use(errorHandler);
 // user to departments - one to many

@@ -33,7 +33,9 @@ const models = [
   require("../models/hotel_dates"),
   require("../models/item_variant"),
   require("../models/add_ons"),
-  require("../models/invoice")
+  require("../models/invoice"),
+  require("../models/merchant"),
+  require("../models/email")
 ];
 
 models.forEach((model) => {

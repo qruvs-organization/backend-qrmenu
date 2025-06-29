@@ -10,12 +10,12 @@ const sendEmail = async (options) => {
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: process.env.SMTP_USERNAME, // generated ethereal user
-      pass: process.env.SMTP_PASSWORD, // generated ethereal password
+      user: options.smtp_username, // generated ethereal user
+      pass: options.smtp_password, // generated ethereal password
     },
   });
   var mailOptions = {
-    from: options.from ? `${options.from} <${process.env.SMTP_USERNAME}>` : `Цахим меню систем <${process.env.SPONSOR_EMAIL}>`,
+    from: options.from ? `${options.from} <${process.env.smtp_username}>` : `Цахим меню систем <${process.env.SPONSOR_EMAIL}>`,
     to: options.email,
     subject: options.subject,
     ...(isHtml
@@ -32,7 +32,6 @@ const sendEmail = async (options) => {
   });
 
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-
   return info;
 };
 
