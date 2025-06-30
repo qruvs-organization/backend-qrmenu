@@ -32,7 +32,26 @@ const getToken = async (merchant_username = username, merchantpassword = passwor
   }
   return response.data.access_token;
 };
+exports.deleteInvoice = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  const invoice = await req.db.invoice.findOne({
+    where: {
+      id,
+    },
+  });
+  if (!invoice) {
+    throw new MyError(
+      `Таны устгах гэсэн ${id} дугаартай мэдээлэл олдсонгүй`,
+      404
+    );
+  }
+  await invoice.destroy();
 
+  res.status(200).json({
+    message: "Invoice Deleted",
+    body: { success: true },
+  });
+});
 // new invoice
 exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
   const merchant = await req.db.merchant.findOne({
@@ -52,8 +71,6 @@ exports.newInvoiceQpay = asyncHandler(async (req, res, next) => {
   }
   const uniq_generate_id = "department_" + departmentId + "_" + cuid()
   const callback_url = QPAY_CALL_BACK_URL + `?departmentId=${departmentId}&exp_day=${exp_day}&userId=${userId}&uniq_generate_id=${uniq_generate_id}&pay_type=${pay_type}`;
-  // const callback_url = "https://webhook-test.com/f5ff1a6564fda51d6d89a88912c5c5f9"
-
   const calculateAmount = generatePayment(exp_day, amount)
   const new_invoice = await axios.post(
     (process.env.QPAY_BASEURL || "https://merchant.qpay.mn") + "/invoice",
