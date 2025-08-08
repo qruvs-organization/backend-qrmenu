@@ -24,6 +24,9 @@ const successRoutes = require("./routes/success");
 const injectDb = require("./middleware/injectDb");
 const cors = require("cors");
 // Аппын тохиргоог process.env рүү ачаалах
+
+
+
 dotenv.config({ path: "./config/config.env" });
 
 const db = require("./config/db-mysql");
