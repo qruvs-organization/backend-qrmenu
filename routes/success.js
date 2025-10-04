@@ -5,7 +5,7 @@ router.route("/").get((req, res) => {
     message: {
       message: "QR-MENU-API is working fine",
       version: "1.0.0",
-      description: "Checker Mongolia Backend API",
+      description: "Checker& Email Security",
     },
     success: true,
   });
