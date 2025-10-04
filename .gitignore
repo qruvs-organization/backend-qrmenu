@@ -37,3 +37,6 @@ yarn-error.log*
 *.tsbuildinfo
 package.lock
 yarn.lock
+logs/
+*.log
+public/upload/

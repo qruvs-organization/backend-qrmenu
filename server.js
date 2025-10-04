@@ -20,6 +20,7 @@ const uploadRoutes = require("./routes/upload")
 const paymentRoutes = require("./routes/payment")
 const emailRoutes = require("./routes/email");
 const merchantRoutes = require("./routes/merchant");
+const checkerRoutes = require("./routes/checker");
 const successRoutes = require("./routes/success");
 const injectDb = require("./middleware/injectDb");
 const cors = require("cors");
@@ -56,10 +57,11 @@ app.use("/api/v1/menu", menuRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/item", menuItemRoutes);
 app.use("/api/v1/add-ons", addOnsRoutes);
-app.use("/api/v1/payment",paymentRoutes );
+app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/variant", ItemVariantRoutes);
 app.use("/api/v1/email", emailRoutes);
 app.use("/api/v1/merchant", merchantRoutes);
+app.use("/api/v1/checker", checkerRoutes);
 app.use("/api/v1", successRoutes);
 app.use(errorHandler);
 // user to departments - one to many
@@ -100,7 +102,7 @@ db.sequelize
 
 // Cron Jobs
 setInterval(async () => {
-  await expiredCheckDepartments({ db }, {}, () => {});
+  await expiredCheckDepartments({ db }, {}, () => { });
 }, 60000); // 60 секунд тутамд ажиллана
 
 const server = app.listen(

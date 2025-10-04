@@ -15,6 +15,12 @@ const PaymentSell = [{
     process: 0,
     exp_day: 30
 },{
+    process: 0,
+    exp_day: 60
+},{
+    process: 0,
+    exp_day: 90
+},{
     process: 5,
     exp_day: 180,
 },
