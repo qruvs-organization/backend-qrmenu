@@ -18,9 +18,7 @@ const addOnsRoutes = require("./routes/add_ons")
 const ItemVariantRoutes = require("./routes/item_variant")
 const uploadRoutes = require("./routes/upload")
 const paymentRoutes = require("./routes/payment")
-const emailRoutes = require("./routes/email");
 const merchantRoutes = require("./routes/merchant");
-const checkerRoutes = require("./routes/checker");
 const successRoutes = require("./routes/success");
 const injectDb = require("./middleware/injectDb");
 const cors = require("cors");
@@ -32,6 +30,7 @@ dotenv.config({ path: "./config/config.env" });
 
 const db = require("./config/db-mysql");
 const { expiredCheckDepartments } = require("./services/cronJobs");
+const checkMongoliaOnly = require("./middleware/checker");
 
 const app = express();
 
@@ -49,8 +48,8 @@ app.use(logger);
 app.use(injectDb(db));
 app.use(express.static("public"));
 app.use(morgan("combined", { stream: accessLogStream }));
-app.use("/api/v1/user", userRoutes);
-app.use("/api/v1/upload", uploadRoutes);
+app.use("/api/v1/user", checkMongoliaOnly, userRoutes);
+app.use("/api/v1/upload", checkMongoliaOnly, uploadRoutes);
 app.use("/api/v1/department", departmentRoutes);
 app.use("/api/v1/hotel", hotelRoutes);
 app.use("/api/v1/menu", menuRoutes);
@@ -59,10 +58,8 @@ app.use("/api/v1/item", menuItemRoutes);
 app.use("/api/v1/add-ons", addOnsRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/variant", ItemVariantRoutes);
-app.use("/api/v1/email", emailRoutes);
-app.use("/api/v1/merchant", merchantRoutes);
-app.use("/api/v1/checker", checkerRoutes);
-app.use("/api/v1", successRoutes);
+app.use("/api/v1/merchant", checkMongoliaOnly, merchantRoutes);
+app.use("/api/v1", checkMongoliaOnly, successRoutes);
 app.use(errorHandler);
 // user to departments - one to many
 db.users.hasMany(db.department, { foreignkey: "user_id", onDelete: "CASCADE" });

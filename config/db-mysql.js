@@ -34,8 +34,7 @@ const models = [
   require("../models/item_variant"),
   require("../models/add_ons"),
   require("../models/invoice"),
-  require("../models/merchant"),
-  require("../models/email")
+  require("../models/merchant")
 ];
 
 models.forEach((model) => {
